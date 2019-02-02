@@ -5,10 +5,17 @@ import {
   Text, SafeAreaView, ScrollView, View, TextInput, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import type { UserState } from '../resourses/flowTypes';
 import * as strings from '../resourses/strings';
 import * as colors from '../resourses/colors';
+import { setSurname, setName } from '../actions/userActions';
+import StyledInput from '../components/StyledInput';
 
-type Props = {};
+type Props = {
+  user: UserState,
+  setName: (name: string) => void,
+  setSurname: (name: string) => void,
+};
 class EntryForm extends Component<Props> {
   render() {
     return (
@@ -36,22 +43,16 @@ class EntryForm extends Component<Props> {
                 <Text>{strings.CLEAR}</Text>
               </TouchableOpacity>
             </View>
-            <View style={{ marginVertical: 10 }}>
-              <Text>{strings.SURNAME}</Text>
-              <TextInput
-                style={{
-                  marginTop: 10,
-                  backgroundColor: colors.INPUT_BACKGROUND_COLOR,
-                  borderColor: colors.INPUT_BORDER_COLOR,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  height: 40,
-                  width: '100%',
-                  paddingLeft: 5,
-                }}
-                placeholder={strings.LATIN_LETTERS}
-              />
-            </View>
+            <StyledInput
+              onChangeText={this.props.setSurname}
+              title={strings.SURNAME}
+              value={this.props.user.surname}
+            />
+            <StyledInput
+              onChangeText={this.props.setName}
+              title={strings.NAME}
+              value={this.props.user.name}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -69,5 +70,5 @@ export default connect(
     sex: state.sex,
     user: state.user,
   }),
-  {},
+  { setSurname, setName },
 )(EntryForm);
