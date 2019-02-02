@@ -14,3 +14,4 @@ export const LATIN_LETTERS = 'Латинскими буквами';
 export const REQUIRED_FIELD = 'Поле обязательно к заполнению';
 export const CLEAR = 'очистить';
 export const NOT = 'Нет';
+export const CERTIFICATE_OF_BIRTH_ERROR = 'В свидетельстве о рождении могут быть цифры и буквы. Например "XIДЖ 123456"';
