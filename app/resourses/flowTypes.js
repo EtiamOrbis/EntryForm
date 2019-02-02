@@ -28,7 +28,7 @@ export type BirthState = {
   year: string,
 };
 
-export type DocumentNoState = {
+export type DocumentNumberState = {
   series: string,
   number: string,
 };
@@ -45,6 +45,7 @@ export type GlobalState = {
   sex: string,
   citizenship: string,
   citizenshipPicker: Array<CitizenshipType>,
+  documentNumber: DocumentNumberState,
   documentType: string,
   documentTypePicker: Array<string>,
   documentExpiry: DocumentExpiryState,

@@ -16,6 +16,7 @@ const initialState: GlobalState = {
   citizenshipPicker: PASS_COUNTRY,
   documentType: 'Общегражданский',
   documentTypePicker: ['Заграничный', 'Общегражданский', 'Свидетельство'],
+  documentNumber: { series: '', number: '' },
   documentExpiry: {
     day: '',
     month: '',
