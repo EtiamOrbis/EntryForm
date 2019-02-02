@@ -1,4 +1,5 @@
 import type { GlobalState } from './flowTypes';
+import PASS_COUNTRY from './countries';
 
 const initialState: GlobalState = {
   user: {
@@ -12,7 +13,7 @@ const initialState: GlobalState = {
   },
   sex: '',
   citizenship: 'Россия',
-  citizenshipPicker: [],
+  citizenshipPicker: PASS_COUNTRY,
   documentType: 'Общегражданский',
   documentTypePicker: ['Заграничный', 'Общегражданский', 'Свидетельство'],
   documentExpiry: {
