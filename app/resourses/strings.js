@@ -1,0 +1,17 @@
+export const PASSENGER_DATA = 'Данные пассажиров';
+export const PASSENGER = 'Пассажир';
+export const ADULT = 'взрослый';
+export const NAME = 'Имя';
+export const SURNAME = 'Фамилия';
+export const DATE_OF_BIRTH = 'Дата рождения';
+export const SEX = 'Пол';
+export const CITIZENSHIP = 'Гражданство';
+export const DOCUMENT = 'Документ';
+export const SERIES = 'Серия';
+export const NUMBER = 'Номер';
+export const DATE_OF_EXPIRY = 'Срок действия';
+export const AIRLINE_BONUS_CARD = 'Бонусная карта авиакомпании';
+export const LATIN_LETTERS = 'Латинскими буквами';
+export const REQUIRED_FIELD = 'Поле обязательно к заполнению';
+export const CLEAR = 'Очистить';
+export const NOT = 'Нет';
