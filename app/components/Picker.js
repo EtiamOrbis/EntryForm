@@ -11,7 +11,7 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
-import type { CitizenshipType } from '../resourses/flowTypes';
+import type { CitizenshipType, DocumentTypeState } from '../resourses/flowTypes';
 
 const styles = StyleSheet.create({
   hiddenPicker: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  values: Array<string | CitizenshipType>,
+  values: Array<CitizenshipType | DocumentTypeState>,
   selected: string,
   style: any,
   onChangeValue: (value: string) => Promise<void> | void,
@@ -156,12 +156,7 @@ export default class Picker extends React.PureComponent<Props, State> {
             selectedValue={this.state.selectedValue}
           >
             {values.map(value => (
-              <RNPicker.Item
-                // $FlowFixMe
-                key={value.code || value}
-                label={value.label || value}
-                value={value.label || value}
-              />
+              <RNPicker.Item key={value.label} label={value.label} value={value.label} />
             ))}
           </RNPicker>
         </Animated.View>
@@ -191,12 +186,7 @@ export default class Picker extends React.PureComponent<Props, State> {
           style={styles.hiddenPicker}
         >
           {this.props.values.map(value => (
-            <RNPicker.Item
-              // $FlowFixMe
-              key={value.code || value}
-              label={value.label || value}
-              value={value.label || value}
-            />
+            <RNPicker.Item key={value.label} label={value.label} value={value.label} />
           ))}
         </RNPicker>
       </View>

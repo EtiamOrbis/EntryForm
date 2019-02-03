@@ -14,7 +14,10 @@ const initialState: GlobalState = {
   },
   sex: '',
   citizenship: { label: 'Россия', code: 'RUS' },
-  documentType: 'Общегражданский',
+  documentType: {
+    label: 'Общегражданский',
+    id: 2,
+  },
   documentNumber: { series: '', number: '' },
   documentExpiry: {
     day: '',

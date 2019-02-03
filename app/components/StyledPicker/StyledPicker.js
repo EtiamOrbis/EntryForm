@@ -3,14 +3,14 @@
 import React, { Component } from 'react';
 import { Text, View, Image } from 'react-native';
 import { styles } from './styles';
-import type { CitizenshipType } from '../../resourses/flowTypes';
+import type { CitizenshipType, DocumentTypeState } from '../../resourses/flowTypes';
 import Picker from '../Picker';
 
 type Props = {
   onChangeValue: (value: string) => void,
   title: string,
   selected: string,
-  values: Array<CitizenshipType | string>,
+  values: Array<CitizenshipType | DocumentTypeState>,
 };
 
 type State = {

@@ -39,12 +39,17 @@ export type DocumentExpiryState = {
   year: string,
 };
 
+export type DocumentTypeState = {
+  label: string,
+  id: number,
+};
+
 export type GlobalState = {
   user: UserState,
   birth: BirthState,
   sex: string,
   citizenship: CitizenshipType,
   documentNumber: DocumentNumberState,
-  documentType: string,
+  documentType: DocumentTypeState,
   documentExpiry: DocumentExpiryState,
 };
