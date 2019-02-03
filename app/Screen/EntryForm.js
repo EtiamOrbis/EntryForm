@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import {
-  Text, SafeAreaView, ScrollView, View, TouchableOpacity, Image,
+  Text, SafeAreaView, ScrollView, View, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import type { UserState, BirthState, CitizenshipType } from '../resourses/flowTypes';
@@ -19,9 +19,9 @@ import {
   SEX_TEXT_COLOR,
   SELECTED_SEX_TEXT_COLOR,
 } from '../resourses/colors';
-import Picker from '../components/Picker';
 import PASS_COUNTRY from '../resourses/countries';
 import { setCitizenship } from '../actions/citizenshipActions';
+import StyledPicker from '../components/StyledPicker/StyledPicker';
 
 type Props = {
   user: UserState,
@@ -153,21 +153,13 @@ class EntryForm extends Component<Props> {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.citizenshipContainer}>
-              <Text>{strings.CITIZENSHIP}</Text>
-              <View style={styles.pickerWrapper}>
-                <View style={styles.pickerContainer}>
-                  <Picker
-                    style={styles.pickerTextStyle}
-                    enabled
-                    onChangeValue={this.props.setCitizenship}
-                    selected={this.props.citizenship.label}
-                    values={PASS_COUNTRY}
-                  />
-                  <Image style={styles.arrowDown} source={{ uri: 'arrowdown' }} />
-                </View>
-              </View>
-            </View>
+            <StyledPicker
+              enabled
+              onChangeValue={this.props.setCitizenship}
+              selected={this.props.citizenship.label}
+              title={strings.CITIZENSHIP}
+              values={PASS_COUNTRY}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

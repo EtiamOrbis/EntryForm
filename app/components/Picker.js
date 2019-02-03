@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  values: Array<CitizenshipType>,
+  values: Array<string | CitizenshipType>,
   selected: string,
   style: any,
   onChangeValue: (value: string) => Promise<void> | void,
@@ -156,7 +156,12 @@ export default class Picker extends React.PureComponent<Props, State> {
             selectedValue={this.state.selectedValue}
           >
             {values.map(value => (
-              <RNPicker.Item key={value.code} label={value.label} value={value.label} />
+              <RNPicker.Item
+                // $FlowFixMe
+                key={value.code || value}
+                label={value.label || value}
+                value={value.label || value}
+              />
             ))}
           </RNPicker>
         </Animated.View>
@@ -186,7 +191,12 @@ export default class Picker extends React.PureComponent<Props, State> {
           style={styles.hiddenPicker}
         >
           {this.props.values.map(value => (
-            <RNPicker.Item key={value.code} label={value.label} value={value.label} />
+            <RNPicker.Item
+              // $FlowFixMe
+              key={value.code || value}
+              label={value.label || value}
+              value={value.label || value}
+            />
           ))}
         </RNPicker>
       </View>
