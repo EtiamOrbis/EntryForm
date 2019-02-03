@@ -168,6 +168,7 @@ const PASS_COUNTRY = [
   { label: 'Республика Конго', code: 'COG' },
   { label: 'Реюньон', code: 'REU' },
   { label: 'Рождества остров', code: 'CXR' },
+  { label: 'Россия', code: 'RUS' },
   { label: 'Руанда', code: 'RWA' },
   { label: 'Румыния', code: 'ROU' },
   { label: 'Сальвадор', code: 'SLV' },

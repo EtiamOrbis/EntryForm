@@ -13,7 +13,7 @@ const initialState: GlobalState = {
     year: '',
   },
   sex: '',
-  citizenship: 'Россия',
+  citizenship: { label: 'Россия', code: 'RUS' },
   documentType: 'Общегражданский',
   documentNumber: { series: '', number: '' },
   documentExpiry: {

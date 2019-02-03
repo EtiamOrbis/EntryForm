@@ -43,7 +43,7 @@ export type GlobalState = {
   user: UserState,
   birth: BirthState,
   sex: string,
-  citizenship: string,
+  citizenship: CitizenshipType,
   documentNumber: DocumentNumberState,
   documentType: string,
   documentExpiry: DocumentExpiryState,

@@ -5,7 +5,7 @@ import {
   Text, SafeAreaView, ScrollView, View, TouchableOpacity, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
-import type { UserState, BirthState } from '../resourses/flowTypes';
+import type { UserState, BirthState, CitizenshipType } from '../resourses/flowTypes';
 import * as strings from '../resourses/strings';
 import { setSurname, setName } from '../actions/userActions';
 import { setBirthDay, setBirthMonth, setBirthYear } from '../actions/birthActions';
@@ -18,24 +18,23 @@ import {
   INPUT_BACKGROUND_COLOR,
   SEX_TEXT_COLOR,
   SELECTED_SEX_TEXT_COLOR,
-  INPUT_BORDER_COLOR,
 } from '../resourses/colors';
 import Picker from '../components/Picker';
 import PASS_COUNTRY from '../resourses/countries';
-import { setCitizenship } from '../actions/citizenshipTypes';
+import { setCitizenship } from '../actions/citizenshipActions';
 
 type Props = {
   user: UserState,
   birth: BirthState,
   sex: string,
-  citizenship: string,
+  citizenship: CitizenshipType,
   setName: (name: string) => void,
   setSurname: (name: string) => void,
   setBirthDay: (day: string) => void,
   setBirthMonth: (month: string) => void,
   setBirthYear: (month: string) => void,
   setSex: (sex: string) => void,
-  setCitizenship: (citizenship: string) => void,
+  setCitizenship: (citizenshipLabel: string) => void,
 };
 class EntryForm extends Component<Props> {
   // $FlowFixMe
@@ -154,42 +153,18 @@ class EntryForm extends Component<Props> {
                 </TouchableOpacity>
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                margin: 10,
-                flex: 1,
-              }}
-            >
+            <View style={styles.citizenshipContainer}>
               <Text>{strings.CITIZENSHIP}</Text>
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: INPUT_BACKGROUND_COLOR,
-                  marginTop: 10,
-                  paddingHorizontal: 10,
-                  borderRadius: 5,
-                  borderWidth: 1,
-                  borderColor: INPUT_BORDER_COLOR,
-                }}
-              >
-                <View
-                  style={{
-                    height: 40,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
+              <View style={styles.pickerWrapper}>
+                <View style={styles.pickerContainer}>
                   <Picker
-                    style={{ fontSize: 16 }}
+                    style={styles.pickerTextStyle}
                     enabled
                     onChangeValue={this.props.setCitizenship}
-                    selected={this.props.citizenship}
+                    selected={this.props.citizenship.label}
                     values={PASS_COUNTRY}
                   />
-                  <Image style={{ width: 12, height: 6 }} source={{ uri: 'arrowdown' }} />
+                  <Image style={styles.arrowDown} source={{ uri: 'arrowdown' }} />
                 </View>
               </View>
             </View>
