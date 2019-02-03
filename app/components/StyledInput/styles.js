@@ -5,9 +5,8 @@ import * as colors from '../../resourses/colors';
 
 export const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
     flex: 1,
-    marginHorizontal: 10,
+    margin: 10,
     flexDirection: 'column',
     justifyContent: 'space-between',
   },

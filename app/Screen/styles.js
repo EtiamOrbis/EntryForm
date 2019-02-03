@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   sexContainer: {
-    marginHorizontal: 10,
+    margin: 10,
     justifyContent: 'space-between',
     flexDirection: 'column',
     flex: 1,

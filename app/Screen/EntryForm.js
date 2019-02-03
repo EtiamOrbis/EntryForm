@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import {
-  Text, SafeAreaView, ScrollView, View, TouchableOpacity,
+  Text, SafeAreaView, ScrollView, View, TouchableOpacity, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import type { UserState, BirthState } from '../resourses/flowTypes';
@@ -18,18 +18,24 @@ import {
   INPUT_BACKGROUND_COLOR,
   SEX_TEXT_COLOR,
   SELECTED_SEX_TEXT_COLOR,
+  INPUT_BORDER_COLOR,
 } from '../resourses/colors';
+import Picker from '../components/Picker';
+import PASS_COUNTRY from '../resourses/countries';
+import { setCitizenship } from '../actions/citizenshipTypes';
 
 type Props = {
   user: UserState,
   birth: BirthState,
   sex: string,
+  citizenship: string,
   setName: (name: string) => void,
   setSurname: (name: string) => void,
   setBirthDay: (day: string) => void,
   setBirthMonth: (month: string) => void,
   setBirthYear: (month: string) => void,
   setSex: (sex: string) => void,
+  setCitizenship: (citizenship: string) => void,
 };
 class EntryForm extends Component<Props> {
   // $FlowFixMe
@@ -148,6 +154,45 @@ class EntryForm extends Component<Props> {
                 </TouchableOpacity>
               </View>
             </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                margin: 10,
+                flex: 1,
+              }}
+            >
+              <Text>{strings.CITIZENSHIP}</Text>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: INPUT_BACKGROUND_COLOR,
+                  marginTop: 10,
+                  paddingHorizontal: 10,
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: INPUT_BORDER_COLOR,
+                }}
+              >
+                <View
+                  style={{
+                    height: 40,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Picker
+                    style={{ fontSize: 16 }}
+                    enabled
+                    onChangeValue={this.props.setCitizenship}
+                    selected={this.props.citizenship}
+                    values={PASS_COUNTRY}
+                  />
+                  <Image style={{ width: 12, height: 6 }} source={{ uri: 'arrowdown' }} />
+                </View>
+              </View>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -172,5 +217,6 @@ export default connect(
     setBirthMonth,
     setBirthYear,
     setSex,
+    setCitizenship,
   },
 )(EntryForm);
