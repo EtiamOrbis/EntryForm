@@ -17,6 +17,7 @@ import type {
   CitizenshipType,
   DocumentTypeState,
   DocumentNumberState,
+  DocumentExpiryState,
 } from '../resourses/flowTypes';
 import * as strings from '../resourses/strings';
 import { setSurname, setName } from '../actions/userActions';
@@ -30,6 +31,7 @@ import {
   INPUT_BACKGROUND_COLOR,
   SEX_TEXT_COLOR,
   SELECTED_SEX_TEXT_COLOR,
+  BACKGROUND,
 } from '../resourses/colors';
 import PASS_COUNTRY from '../resourses/countries';
 import { setCitizenship } from '../actions/citizenshipActions';
@@ -39,7 +41,10 @@ import {
   setDocumentType,
   setDocumentSeries,
   setDocumentNumber,
-} from '../actions/documentTypeActions';
+  setDocumentExpiryDay,
+  setDocumentExpiryMonth,
+  setDocumentExpiryYear,
+} from '../actions/documentActions';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -50,16 +55,20 @@ type Props = {
   citizenship: CitizenshipType,
   documentType: DocumentTypeState,
   documentNumber: DocumentNumberState,
+  documentExpiry: DocumentExpiryState,
   setName: (name: string) => void,
   setSurname: (name: string) => void,
   setBirthDay: (day: string) => void,
   setBirthMonth: (month: string) => void,
-  setBirthYear: (month: string) => void,
+  setBirthYear: (year: string) => void,
   setSex: (sex: string) => void,
   setCitizenship: (citizenshipLabel: string) => void,
   setDocumentType: (documentTypeLabel: string) => void,
   setDocumentSeries: (documentSeries: string) => void,
   setDocumentNumber: (documentNumber: string) => void,
+  setDocumentExpiryDay: (day: string) => void,
+  setDocumentExpiryMonth: (month: string) => void,
+  setDocumentExpiryYear: (year: string) => void,
 };
 
 type State = {
@@ -69,6 +78,8 @@ type State = {
 
 class EntryForm extends Component<Props, State> {
   seriesRef: ?StyledInput = null;
+
+  isInternational = this.props.documentType.id === 1;
 
   state = {
     width: (SCREEN_WIDTH - 20) / 3,
@@ -103,7 +114,7 @@ class EntryForm extends Component<Props, State> {
   // $FlowFixMe
   @bind
   seriesMaxLength() {
-    if (this.props.documentType.id === 1) {
+    if (this.isInternational) {
       return 2;
     }
     if (this.props.documentType.id === 2) {
@@ -269,7 +280,47 @@ class EntryForm extends Component<Props, State> {
                   value={this.props.documentNumber.number}
                   textInputStyle={{ textAlign: 'center' }}
                   keyboardType="number-pad"
-                  maxLength={this.props.documentType.id === 1 ? 7 : 6}
+                  maxLength={this.isInternational ? 7 : 6}
+                />
+              </View>
+              <View style={styles.dateWrapper}>
+                <StyledInput
+                  editable={this.isInternational}
+                  onChangeText={this.props.setDocumentExpiryDay}
+                  title={strings.DATE_OF_EXPIRY}
+                  value={this.props.documentExpiry.day}
+                  placeholder={strings.DD}
+                  textInputStyle={{
+                    textAlign: 'center',
+                    backgroundColor: this.isInternational ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                  }}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                />
+                <StyledInput
+                  editable={this.isInternational}
+                  onChangeText={this.props.setDocumentExpiryMonth}
+                  value={this.props.documentExpiry.month}
+                  placeholder={strings.MM}
+                  textInputStyle={{
+                    textAlign: 'center',
+                    backgroundColor: this.isInternational ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                  }}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                  onLayout={this.onLayoutChanges}
+                />
+                <StyledInput
+                  editable={this.isInternational}
+                  onChangeText={this.props.setDocumentExpiryYear}
+                  value={this.props.documentExpiry.year}
+                  placeholder={strings.YYYY}
+                  textInputStyle={{
+                    textAlign: 'center',
+                    backgroundColor: this.isInternational ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                  }}
+                  keyboardType="number-pad"
+                  maxLength={2}
                 />
               </View>
             </View>
@@ -301,5 +352,8 @@ export default connect(
     setDocumentType,
     setDocumentSeries,
     setDocumentNumber,
+    setDocumentExpiryDay,
+    setDocumentExpiryMonth,
+    setDocumentExpiryYear,
   },
 )(EntryForm);

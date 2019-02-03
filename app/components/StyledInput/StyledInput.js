@@ -67,13 +67,13 @@ class StyledInput extends Component<Props, State> {
           onChangeText={this.props.onChangeText}
           style={[
             styles.input,
-            this.props.textInputStyle,
             {
               backgroundColor: this.state.error
                 ? INPUT_BACKGROUND_COLOR_WRONG
                 : INPUT_BACKGROUND_COLOR,
               borderColor: this.state.error ? INPUT_BORDER_COLOR_WRONG : INPUT_BORDER_COLOR,
             },
+            this.props.textInputStyle,
           ]}
           placeholder={this.props.placeholder}
           value={this.props.value}
