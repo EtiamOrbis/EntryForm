@@ -5,16 +5,21 @@ import {
   Text, SafeAreaView, ScrollView, View, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import type { UserState } from '../resourses/flowTypes';
+import type { UserState, BirthState } from '../resourses/flowTypes';
 import * as strings from '../resourses/strings';
 import { setSurname, setName } from '../actions/userActions';
+import { setBirthDay, setBirthMonth, setBirthYear } from '../actions/birthActions';
 import StyledInput from '../components/StyledInput';
 import { styles } from './styles';
 
 type Props = {
   user: UserState,
+  birth: BirthState,
   setName: (name: string) => void,
   setSurname: (name: string) => void,
+  setBirthDay: (day: string) => void,
+  setBirthMonth: (month: string) => void,
+  setBirthYear: (month: string) => void,
 };
 class EntryForm extends Component<Props> {
   render() {
@@ -43,12 +48,30 @@ class EntryForm extends Component<Props> {
             />
             <View style={styles.dateWrapper}>
               <StyledInput
-                onChangeText={this.props.setName}
+                onChangeText={this.props.setBirthDay}
                 title={strings.DATE_OF_BIRTH}
-                value={this.props.user.name}
+                value={this.props.birth.day}
+                placeholder={strings.DD}
+                textInputStyle={{ textAlign: 'center' }}
+                keyboardType="number-pad"
+                maxLength={2}
               />
-              <StyledInput onChangeText={this.props.setName} value={this.props.user.name} />
-              <StyledInput onChangeText={this.props.setName} value={this.props.user.name} />
+              <StyledInput
+                onChangeText={this.props.setBirthMonth}
+                value={this.props.birth.month}
+                placeholder={strings.MM}
+                textInputStyle={{ textAlign: 'center' }}
+                keyboardType="number-pad"
+                maxLength={2}
+              />
+              <StyledInput
+                onChangeText={this.props.setBirthYear}
+                value={this.props.birth.year}
+                placeholder={strings.YYYY}
+                textInputStyle={{ textAlign: 'center' }}
+                keyboardType="number-pad"
+                maxLength={2}
+              />
             </View>
           </View>
         </ScrollView>
@@ -67,5 +90,11 @@ export default connect(
     sex: state.sex,
     user: state.user,
   }),
-  { setSurname, setName },
+  {
+    setSurname,
+    setName,
+    setBirthDay,
+    setBirthMonth,
+    setBirthYear,
+  },
 )(EntryForm);

@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     height: 40,
     width: '100%',
-    paddingLeft: 5,
   },
   error: {
     color: colors.TEXT_COLOR_WRONG,

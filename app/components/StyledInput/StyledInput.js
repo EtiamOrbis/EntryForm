@@ -8,6 +8,7 @@ import {
   INPUT_BORDER_COLOR,
   INPUT_BORDER_COLOR_WRONG,
 } from '../../resourses/colors';
+import type { Style } from '../../resourses/flowTypes';
 
 type Props = {
   onChangeText: (value: string) => void,
@@ -15,6 +16,7 @@ type Props = {
   title: string,
   value: string,
   error: string,
+  textInputStyle: Style,
 };
 
 type State = {
@@ -41,9 +43,11 @@ class StyledInput extends Component<Props, State> {
       <View style={styles.container}>
         <Text>{this.props.title}</Text>
         <TextInput
+          {...this.props}
           onChangeText={this.props.onChangeText}
           style={[
             styles.input,
+            this.props.textInputStyle,
             {
               backgroundColor: this.state.error
                 ? INPUT_BACKGROUND_COLOR_WRONG
@@ -55,7 +59,9 @@ class StyledInput extends Component<Props, State> {
           value={this.props.value}
           onEndEditing={this.checkValid}
         />
-        {this.state.error ? <Text style={styles.error}>{this.props.error}</Text> : null}
+        {this.state.error && this.props.error ? (
+          <Text style={styles.error}>{this.props.error}</Text>
+        ) : null}
       </View>
     );
   }

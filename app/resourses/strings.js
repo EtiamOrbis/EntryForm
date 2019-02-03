@@ -15,3 +15,6 @@ export const REQUIRED_FIELD = 'Поле обязательно к заполне
 export const CLEAR = 'очистить';
 export const NOT = 'Нет';
 export const CERTIFICATE_OF_BIRTH_ERROR = 'В свидетельстве о рождении могут быть цифры и буквы. Например "XIДЖ 123456"';
+export const DD = 'ДД';
+export const MM = 'ММ';
+export const YYYY = 'ГГГГ';

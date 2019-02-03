@@ -1,6 +1,8 @@
 export const SET_NAME: string = 'SET_NAME';
 export const SET_SURNAME: string = 'SET_SURNAME';
-export const SET_BIRTH: string = 'SET_BIRTH';
+export const SET_BIRTH_DAY: string = 'SET_BIRTH_DAY';
+export const SET_BIRTH_MONTH: string = 'SET_BIRTH_MONTH';
+export const SET_BIRTH_YEAR: string = 'SET_BIRTH_YEAR';
 export const SET_SEX: string = 'SET_SEX';
 export const SET_CITIZENSHIP: string = 'SET_CITIZENSHIP';
 export const SET_DOCUMENT_TYPE: string = 'SET_DOCUMENT_TYPE';
