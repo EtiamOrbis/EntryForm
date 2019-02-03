@@ -19,6 +19,7 @@ type Props = {
   value: string,
   error: string,
   textInputStyle: Style,
+  onLayout: (data: any) => void,
 };
 
 type State = {
@@ -41,6 +42,22 @@ class StyledInput extends Component<Props, State> {
     console.log(this.state);
   }
 
+  // $FlowFixMe
+  @bind
+  showError() {
+    this.setState({
+      error: true,
+    });
+  }
+
+  // $FlowFixMe
+  @bind
+  dismissError() {
+    this.setState({
+      error: false,
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -61,6 +78,7 @@ class StyledInput extends Component<Props, State> {
           placeholder={this.props.placeholder}
           value={this.props.value}
           onEndEditing={this.checkValid}
+          onLayout={this.props.onLayout}
         />
         {this.state.error && this.props.error ? (
           <Text style={styles.error}>{this.props.error}</Text>

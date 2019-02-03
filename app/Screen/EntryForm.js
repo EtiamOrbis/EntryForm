@@ -2,7 +2,13 @@
 
 import React, { Component } from 'react';
 import {
-  Text, SafeAreaView, ScrollView, View, TouchableOpacity,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import type {
@@ -10,6 +16,7 @@ import type {
   BirthState,
   CitizenshipType,
   DocumentTypeState,
+  DocumentNumberState,
 } from '../resourses/flowTypes';
 import * as strings from '../resourses/strings';
 import { setSurname, setName } from '../actions/userActions';
@@ -28,7 +35,13 @@ import PASS_COUNTRY from '../resourses/countries';
 import { setCitizenship } from '../actions/citizenshipActions';
 import StyledPicker from '../components/StyledPicker/StyledPicker';
 import DOCUMENT_TYPES from '../resourses/documents';
-import { setDocumentType } from '../actions/documentTypeActions';
+import {
+  setDocumentType,
+  setDocumentSeries,
+  setDocumentNumber,
+} from '../actions/documentTypeActions';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 type Props = {
   user: UserState,
@@ -36,6 +49,7 @@ type Props = {
   sex: string,
   citizenship: CitizenshipType,
   documentType: DocumentTypeState,
+  documentNumber: DocumentNumberState,
   setName: (name: string) => void,
   setSurname: (name: string) => void,
   setBirthDay: (day: string) => void,
@@ -44,8 +58,60 @@ type Props = {
   setSex: (sex: string) => void,
   setCitizenship: (citizenshipLabel: string) => void,
   setDocumentType: (documentTypeLabel: string) => void,
+  setDocumentSeries: (documentSeries: string) => void,
+  setDocumentNumber: (documentNumber: string) => void,
 };
-class EntryForm extends Component<Props> {
+
+type State = {
+  width: number,
+  seriesValid: boolean,
+};
+
+class EntryForm extends Component<Props, State> {
+  seriesRef: ?StyledInput = null;
+
+  state = {
+    width: (SCREEN_WIDTH - 20) / 3,
+    seriesValid: false,
+  };
+
+  // $FlowFixMe
+  @bind
+  onLayoutChanges(data) {
+    this.setState({ width: data.nativeEvent.layout.width + 20 });
+  }
+
+  // $FlowFixMe
+  @bind
+  setDocumentSeries(text: string) {
+    if (text) {
+      const valid = text.match(/^M{0,3}(D?C{0,3}|C[DM])(L?X{0,3}|X[LC])(V?I{0,3}|I[VX])[А-Я]{2}$/);
+      if (valid) {
+        if (this.seriesRef) {
+          this.seriesRef.dismissError();
+        }
+        this.setState({
+          seriesValid: true,
+        });
+      } else if (this.seriesRef) {
+        this.seriesRef.showError();
+      }
+    }
+    this.props.setDocumentSeries(text);
+  }
+
+  // $FlowFixMe
+  @bind
+  seriesMaxLength() {
+    if (this.props.documentType.id === 1) {
+      return 2;
+    }
+    if (this.props.documentType.id === 2) {
+      return 4;
+    }
+    return 6;
+  }
+
   // $FlowFixMe
   @bind
   changeSexMale() {
@@ -58,127 +124,158 @@ class EntryForm extends Component<Props> {
     this.props.setSex('female');
   }
 
+  // $FlowFixMe
+  @bind
+  seriesSetRef(seriesRef) {
+    this.seriesRef = seriesRef;
+  }
+
   render() {
     console.log(this.props);
-
     return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <Text style={styles.header}>{strings.PASSENGER_DATA}</Text>
-          <View style={styles.inputsWrapper}>
-            <View style={styles.formTitle}>
-              <Text style={{ fontSize: 17 }}>{strings.PASSENGER_ADULT}</Text>
-              <TouchableOpacity>
-                <Text>{strings.CLEAR}</Text>
-              </TouchableOpacity>
-            </View>
-            <StyledInput
-              onChangeText={this.props.setSurname}
-              title={strings.SURNAME}
-              value={this.props.user.surname}
-              error={strings.REQUIRED_FIELD}
-            />
-            <StyledInput
-              onChangeText={this.props.setName}
-              title={strings.NAME}
-              value={this.props.user.name}
-              error={strings.REQUIRED_FIELD}
-            />
-            <View style={styles.dateWrapper}>
-              <StyledInput
-                onChangeText={this.props.setBirthDay}
-                title={strings.DATE_OF_BIRTH}
-                value={this.props.birth.day}
-                placeholder={strings.DD}
-                textInputStyle={{ textAlign: 'center' }}
-                keyboardType="number-pad"
-                maxLength={2}
-              />
-              <StyledInput
-                onChangeText={this.props.setBirthMonth}
-                value={this.props.birth.month}
-                placeholder={strings.MM}
-                textInputStyle={{ textAlign: 'center' }}
-                keyboardType="number-pad"
-                maxLength={2}
-              />
-              <StyledInput
-                onChangeText={this.props.setBirthYear}
-                value={this.props.birth.year}
-                placeholder={strings.YYYY}
-                textInputStyle={{ textAlign: 'center' }}
-                keyboardType="number-pad"
-                maxLength={2}
-              />
-            </View>
-            <View style={styles.sexContainer}>
-              <Text>{strings.SEX}</Text>
-              <View style={styles.sexButtonsWrapper}>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={this.changeSexMale}
-                  style={[
-                    styles.sexButton,
-                    styles.leftButton,
-                    {
-                      backgroundColor:
-                        this.props.sex === 'male'
-                          ? SELECTED_SEX_BACKGROUND
-                          : INPUT_BACKGROUND_COLOR,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: this.props.sex === 'male' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
-                    }}
-                  >
-                    {strings.M}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={this.changeSexFemale}
-                  style={[
-                    styles.sexButton,
-                    styles.rightButton,
-                    {
-                      backgroundColor:
-                        this.props.sex === 'female'
-                          ? SELECTED_SEX_BACKGROUND
-                          : INPUT_BACKGROUND_COLOR,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: this.props.sex === 'female' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
-                    }}
-                  >
-                    {strings.W}
-                  </Text>
+      <KeyboardAvoidingView behavior="padding" enabled>
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            <Text style={styles.header}>{strings.PASSENGER_DATA}</Text>
+            <View style={styles.inputsWrapper}>
+              <View style={styles.formTitle}>
+                <Text style={{ fontSize: 17 }}>{strings.PASSENGER_ADULT}</Text>
+                <TouchableOpacity>
+                  <Text>{strings.CLEAR}</Text>
                 </TouchableOpacity>
               </View>
+              <StyledInput
+                onChangeText={this.props.setSurname}
+                title={strings.SURNAME}
+                value={this.props.user.surname}
+                error={strings.REQUIRED_FIELD}
+              />
+              <StyledInput
+                onChangeText={this.props.setName}
+                title={strings.NAME}
+                value={this.props.user.name}
+                error={strings.REQUIRED_FIELD}
+              />
+              <View style={styles.dateWrapper}>
+                <StyledInput
+                  onChangeText={this.props.setBirthDay}
+                  title={strings.DATE_OF_BIRTH}
+                  value={this.props.birth.day}
+                  placeholder={strings.DD}
+                  textInputStyle={{ textAlign: 'center' }}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                />
+                <StyledInput
+                  onChangeText={this.props.setBirthMonth}
+                  value={this.props.birth.month}
+                  placeholder={strings.MM}
+                  textInputStyle={{ textAlign: 'center' }}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                  onLayout={this.onLayoutChanges}
+                />
+                <StyledInput
+                  onChangeText={this.props.setBirthYear}
+                  value={this.props.birth.year}
+                  placeholder={strings.YYYY}
+                  textInputStyle={{ textAlign: 'center' }}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                />
+              </View>
+              <View style={styles.sexContainer}>
+                <Text>{strings.SEX}</Text>
+                <View style={styles.sexButtonsWrapper}>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={this.changeSexMale}
+                    style={[
+                      styles.sexButton,
+                      styles.leftButton,
+                      {
+                        backgroundColor:
+                          this.props.sex === 'male'
+                            ? SELECTED_SEX_BACKGROUND
+                            : INPUT_BACKGROUND_COLOR,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: this.props.sex === 'male' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
+                      }}
+                    >
+                      {strings.M}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={this.changeSexFemale}
+                    style={[
+                      styles.sexButton,
+                      styles.rightButton,
+                      {
+                        backgroundColor:
+                          this.props.sex === 'female'
+                            ? SELECTED_SEX_BACKGROUND
+                            : INPUT_BACKGROUND_COLOR,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color:
+                          this.props.sex === 'female' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
+                      }}
+                    >
+                      {strings.W}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <StyledPicker
+                enabled
+                onChangeValue={this.props.setCitizenship}
+                selected={this.props.citizenship.label}
+                title={strings.CITIZENSHIP}
+                values={PASS_COUNTRY}
+              />
+              <StyledPicker
+                enabled
+                onChangeValue={this.props.setDocumentType}
+                selected={this.props.documentType.label}
+                title={strings.DOCUMENT}
+                values={DOCUMENT_TYPES}
+              />
+              <View style={styles.dateWrapper}>
+                <View style={{ width: this.state.width }}>
+                  <StyledInput
+                    autoCapitalize="characters"
+                    onChangeText={this.setDocumentSeries}
+                    title={strings.SERIES}
+                    value={this.props.documentNumber.series}
+                    textInputStyle={{ textAlign: 'center' }}
+                    keyboardType={this.props.documentType.id === 3 ? 'default' : 'number-pad'}
+                    maxLength={this.seriesMaxLength()}
+                    ref={this.seriesSetRef}
+                  />
+                </View>
+                <StyledInput
+                  onChangeText={this.props.setDocumentNumber}
+                  title={strings.NUMBER}
+                  value={this.props.documentNumber.number}
+                  textInputStyle={{ textAlign: 'center' }}
+                  keyboardType="number-pad"
+                  maxLength={this.props.documentType.id === 1 ? 7 : 6}
+                />
+              </View>
             </View>
-            <StyledPicker
-              enabled
-              onChangeValue={this.props.setCitizenship}
-              selected={this.props.citizenship.label}
-              title={strings.CITIZENSHIP}
-              values={PASS_COUNTRY}
-            />
-            <StyledPicker
-              enabled
-              onChangeValue={this.props.setDocumentType}
-              selected={this.props.documentType.label}
-              title={strings.DOCUMENT}
-              values={DOCUMENT_TYPES}
-            />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -202,5 +299,7 @@ export default connect(
     setSex,
     setCitizenship,
     setDocumentType,
+    setDocumentSeries,
+    setDocumentNumber,
   },
 )(EntryForm);
