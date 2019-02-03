@@ -1,4 +1,5 @@
 // @flow
+
 import type { Action, BirthState } from '../resourses/flowTypes';
 import initialState from '../resourses/initialState';
 import { SET_BIRTH_DAY, SET_BIRTH_MONTH, SET_BIRTH_YEAR } from '../actions/actionTypes';

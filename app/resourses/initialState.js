@@ -1,3 +1,5 @@
+// @flow
+
 import type { GlobalState } from './flowTypes';
 
 const initialState: GlobalState = {

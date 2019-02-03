@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Text, View, TextInput } from 'react-native';
 import { bind } from '../../lib/decorators';
@@ -28,6 +30,7 @@ class StyledInput extends Component<Props, State> {
     error: false,
   };
 
+  // $FlowFixMe
   @bind
   checkValid() {
     if (this.props.value === '') {

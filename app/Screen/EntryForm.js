@@ -1,4 +1,4 @@
-// flow
+// @flow
 
 import React, { Component } from 'react';
 import {
@@ -11,18 +11,42 @@ import { setSurname, setName } from '../actions/userActions';
 import { setBirthDay, setBirthMonth, setBirthYear } from '../actions/birthActions';
 import StyledInput from '../components/StyledInput';
 import { styles } from './styles';
+import { setSex } from '../actions/sexActions';
+import { bind } from '../lib/decorators';
+import {
+  SELECTED_SEX_BACKGROUND,
+  INPUT_BACKGROUND_COLOR,
+  SEX_TEXT_COLOR,
+  SELECTED_SEX_TEXT_COLOR,
+} from '../resourses/colors';
 
 type Props = {
   user: UserState,
   birth: BirthState,
+  sex: string,
   setName: (name: string) => void,
   setSurname: (name: string) => void,
   setBirthDay: (day: string) => void,
   setBirthMonth: (month: string) => void,
   setBirthYear: (month: string) => void,
+  setSex: (sex: string) => void,
 };
 class EntryForm extends Component<Props> {
+  // $FlowFixMe
+  @bind
+  changeSexMale() {
+    this.props.setSex('male');
+  }
+
+  // $FlowFixMe
+  @bind
+  changeSexFemale() {
+    this.props.setSex('female');
+  }
+
   render() {
+    console.log(this.props);
+
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
@@ -73,6 +97,57 @@ class EntryForm extends Component<Props> {
                 maxLength={2}
               />
             </View>
+            <View style={styles.sexContainer}>
+              <Text>{strings.SEX}</Text>
+              <View style={styles.sexButtonsWrapper}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={this.changeSexMale}
+                  style={[
+                    styles.sexButton,
+                    styles.leftButton,
+                    {
+                      backgroundColor:
+                        this.props.sex === 'male'
+                          ? SELECTED_SEX_BACKGROUND
+                          : INPUT_BACKGROUND_COLOR,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: this.props.sex === 'male' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
+                    }}
+                  >
+                    {strings.M}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={this.changeSexFemale}
+                  style={[
+                    styles.sexButton,
+                    styles.rightButton,
+                    {
+                      backgroundColor:
+                        this.props.sex === 'female'
+                          ? SELECTED_SEX_BACKGROUND
+                          : INPUT_BACKGROUND_COLOR,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: this.props.sex === 'female' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
+                    }}
+                  >
+                    {strings.W}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -96,5 +171,6 @@ export default connect(
     setBirthDay,
     setBirthMonth,
     setBirthYear,
+    setSex,
   },
 )(EntryForm);

@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import * as colors from '../../resourses/colors';
 
+// @flow
+
 export const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
@@ -17,6 +19,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     height: 40,
     width: '100%',
+    fontSize: 16,
   },
   error: {
     color: colors.TEXT_COLOR_WRONG,

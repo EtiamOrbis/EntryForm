@@ -44,10 +44,7 @@ export type GlobalState = {
   birth: BirthState,
   sex: string,
   citizenship: string,
-  citizenshipPicker: Array<CitizenshipType>,
   documentNumber: DocumentNumberState,
   documentType: string,
-  documentTypePicker: Array<string>,
   documentExpiry: DocumentExpiryState,
-  bonusCard: string,
 };

@@ -18,3 +18,5 @@ export const CERTIFICATE_OF_BIRTH_ERROR = 'В свидетельстве о ро
 export const DD = 'ДД';
 export const MM = 'ММ';
 export const YYYY = 'ГГГГ';
+export const M = 'М';
+export const W = 'Ж';

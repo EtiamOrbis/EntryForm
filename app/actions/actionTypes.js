@@ -1,3 +1,5 @@
+// @flow
+
 export const SET_NAME: string = 'SET_NAME';
 export const SET_SURNAME: string = 'SET_SURNAME';
 export const SET_BIRTH_DAY: string = 'SET_BIRTH_DAY';
