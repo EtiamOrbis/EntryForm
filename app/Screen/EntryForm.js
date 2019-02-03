@@ -5,7 +5,12 @@ import {
   Text, SafeAreaView, ScrollView, View, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import type { UserState, BirthState, CitizenshipType } from '../resourses/flowTypes';
+import type {
+  UserState,
+  BirthState,
+  CitizenshipType,
+  DocumentTypeState,
+} from '../resourses/flowTypes';
 import * as strings from '../resourses/strings';
 import { setSurname, setName } from '../actions/userActions';
 import { setBirthDay, setBirthMonth, setBirthYear } from '../actions/birthActions';
@@ -22,12 +27,15 @@ import {
 import PASS_COUNTRY from '../resourses/countries';
 import { setCitizenship } from '../actions/citizenshipActions';
 import StyledPicker from '../components/StyledPicker/StyledPicker';
+import DOCUMENT_TYPES from '../resourses/documents';
+import { setDocumentType } from '../actions/documentTypeActions';
 
 type Props = {
   user: UserState,
   birth: BirthState,
   sex: string,
   citizenship: CitizenshipType,
+  documentType: DocumentTypeState,
   setName: (name: string) => void,
   setSurname: (name: string) => void,
   setBirthDay: (day: string) => void,
@@ -35,6 +43,7 @@ type Props = {
   setBirthYear: (month: string) => void,
   setSex: (sex: string) => void,
   setCitizenship: (citizenshipLabel: string) => void,
+  setDocumentType: (documentTypeLabel: string) => void,
 };
 class EntryForm extends Component<Props> {
   // $FlowFixMe
@@ -160,6 +169,13 @@ class EntryForm extends Component<Props> {
               title={strings.CITIZENSHIP}
               values={PASS_COUNTRY}
             />
+            <StyledPicker
+              enabled
+              onChangeValue={this.props.setDocumentType}
+              selected={this.props.documentType.label}
+              title={strings.DOCUMENT}
+              values={DOCUMENT_TYPES}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -185,5 +201,6 @@ export default connect(
     setBirthYear,
     setSex,
     setCitizenship,
+    setDocumentType,
   },
 )(EntryForm);
