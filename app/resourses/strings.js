@@ -20,3 +20,4 @@ export const MM = 'ММ';
 export const YYYY = 'ГГГГ';
 export const M = 'М';
 export const W = 'Ж';
+export const SEND = 'Отправить';

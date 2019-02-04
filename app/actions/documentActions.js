@@ -13,6 +13,27 @@ import DOCUMENT_TYPES from '../resourses/documents';
 import { validator } from '../lib/dataValidator';
 
 const documentSeriesValidate = (text: string, id, dispatch: Dispatch) => {
+  console.log(text);
+  if (id === 1 && text.length === 2) {
+    dispatch({
+      type: SET_VALID,
+      value: {
+        field: 'SetDocumentSeriesValid',
+        value: true,
+      },
+    });
+    return;
+  }
+  if (id === 2 && text.length === 4) {
+    dispatch({
+      type: SET_VALID,
+      value: {
+        field: 'SetDocumentSeriesValid',
+        value: true,
+      },
+    });
+    return;
+  }
   if (id === 3) {
     if (text) {
       if (text[0].match(/[XVI]/g)) {
@@ -30,15 +51,15 @@ const documentSeriesValidate = (text: string, id, dispatch: Dispatch) => {
           return;
         }
       }
-      dispatch({
-        type: SET_VALID,
-        value: {
-          field: 'SetDocumentSeriesValid',
-          value: false,
-        },
-      });
     }
   }
+  dispatch({
+    type: SET_VALID,
+    value: {
+      field: 'SetDocumentSeriesValid',
+      value: false,
+    },
+  });
 };
 
 export const setDocumentType = (documentTypeLabel: string) => (dispatch: Dispatch) => {
@@ -48,19 +69,21 @@ export const setDocumentType = (documentTypeLabel: string) => (dispatch: Dispatc
         type: SET_DOCUMENT_TYPE,
         value: item,
       });
-      dispatch({
-        type: SET_VALID,
-        value: {
-          field: 'documentType',
-          value: false,
-        },
-      });
+      if (item.id === 1) {
+        dispatch({
+          type: SET_VALID,
+          value: {
+            field: 'documentExpiry',
+            value: false,
+          },
+        });
+      }
     }
   });
 };
 
 export const setDocumentSeries = (documentSeries: string) => (dispatch: Dispatch, getState) => {
-  documentSeriesValidate(documentSeries, getState().documentType.id, dispatch);
+  documentSeriesValidate(documentSeries.toUpperCase(), getState().documentType.id, dispatch);
   dispatch({
     type: SET_DOCUMENT_SERIES,
     value: documentSeries,
@@ -81,6 +104,7 @@ export const setDocumentNumber = (documentNumber: string) => (dispatch: Dispatch
         value: true,
       },
     });
+    return;
   }
   if (state.documentType.id === 2 && documentNumber.length === 6) {
     dispatch({
@@ -90,6 +114,7 @@ export const setDocumentNumber = (documentNumber: string) => (dispatch: Dispatch
         value: true,
       },
     });
+    return;
   }
   if (state.documentType.id === 3 && documentNumber.length === 6) {
     dispatch({
@@ -99,7 +124,15 @@ export const setDocumentNumber = (documentNumber: string) => (dispatch: Dispatch
         value: true,
       },
     });
+    return;
   }
+  dispatch({
+    type: SET_VALID,
+    value: {
+      field: 'SetDocumentNumberValid',
+      value: false,
+    },
+  });
 };
 
 export const setDocumentExpiryDay = (day: string) => (dispatch: Dispatch, getState) => {
@@ -114,6 +147,14 @@ export const setDocumentExpiryDay = (day: string) => (dispatch: Dispatch, getSta
       value: {
         field: 'documentExpiry',
         value: true,
+      },
+    });
+  } else {
+    dispatch({
+      type: SET_VALID,
+      value: {
+        field: 'documentExpiry',
+        value: false,
       },
     });
   }
@@ -133,10 +174,18 @@ export const setDocumentExpiryMonth = (month: string) => (dispatch: Dispatch, ge
         value: true,
       },
     });
+  } else {
+    dispatch({
+      type: SET_VALID,
+      value: {
+        field: 'documentExpiry',
+        value: false,
+      },
+    });
   }
 };
 
-export const setDocumentExpiryYear = (year: string) => (dispatch: Dispatch) => {
+export const setDocumentExpiryYear = (year: string) => (dispatch: Dispatch, getState) => {
   const state = getState();
   dispatch({
     type: SET_DOCUMENT_EXPIRY_YEAR,
@@ -148,6 +197,14 @@ export const setDocumentExpiryYear = (year: string) => (dispatch: Dispatch) => {
       value: {
         field: 'documentExpiry',
         value: true,
+      },
+    });
+  } else {
+    dispatch({
+      type: SET_VALID,
+      value: {
+        field: 'documentExpiry',
+        value: false,
       },
     });
   }

@@ -4,7 +4,11 @@ import { StyleSheet } from 'react-native';
 import * as colors from '../resourses/colors';
 
 export const styles = StyleSheet.create({
-  container: { width: '100%', height: '100%', backgroundColor: 'white' },
+  container: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'white',
+  },
   header: { fontSize: 20, paddingLeft: 20 },
   inputsWrapper: {
     backgroundColor: colors.BACKGROUND,
@@ -78,4 +82,17 @@ export const styles = StyleSheet.create({
   },
   pickerTextStyle: { fontSize: 16 },
   arrowDown: { width: 12, height: 6 },
+  sendButton: {
+    flex: 1,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  sendButtonText: { color: '#fff', fontSize: 17 },
+  dateTextInput: {
+    textAlign: 'center',
+  },
 });

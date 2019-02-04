@@ -15,3 +15,4 @@ export const SET_DOCUMENT_EXPIRY_DAY: string = 'SET_DOCUMENT_EXPIRY_DAY';
 export const SET_DOCUMENT_EXPIRY_MONTH: string = 'SET_DOCUMENT_EXPIRY_MONTH';
 export const SET_DOCUMENT_EXPIRY_YEAR: string = 'SET_DOCUMENT_EXPIRY_YEAR';
 export const SET_VALID: string = 'SET_VALID';
+export const CLEAR: string = 'CLEAR';

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
 import type {
@@ -48,6 +49,7 @@ import {
   setDocumentExpiryYear,
 } from '../actions/documentActions';
 import { IS_IOS } from '../resourses/constants';
+import { setClear } from '../actions/clearAction';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -72,21 +74,18 @@ type Props = {
   setDocumentExpiryDay: (day: string) => void,
   setDocumentExpiryMonth: (month: string) => void,
   setDocumentExpiryYear: (year: string) => void,
+  setClear: () => void,
 };
 
 type State = {
   width: number,
-  isValid: boolean,
 };
 
 class EntryForm extends Component<Props, State> {
   seriesRef: ?StyledInput = null;
 
-  isInternational = this.props.documentType.id === 1;
-
   state = {
     width: (SCREEN_WIDTH - 20) / 3,
-    isValid: false,
   };
 
   @bind
@@ -96,33 +95,12 @@ class EntryForm extends Component<Props, State> {
 
   @bind
   setDocumentSeries(text: string) {
-    if (this.props.documentType.id === 3) {
-      if (text) {
-        if (text[0].match(/[XVI]/g)) {
-          const valid = text.match(
-            /^(M{0,3}(D?C{0,3}|C[DM])(L?X{0,3}|X[LC])(V?I{0,3}|I[VX])){1,2}[А-Я]{2}$/,
-          );
-          if (valid) {
-            if (this.seriesRef) {
-              this.seriesRef.dismissError();
-            }
-            this.setState({
-              isValid: true,
-            });
-          } else if (this.seriesRef) {
-            this.seriesRef.showError();
-          }
-        } else if (this.seriesRef) {
-          this.seriesRef.showError();
-        }
-      }
-    }
     this.props.setDocumentSeries(text);
   }
 
   @bind
   seriesMaxLength() {
-    if (this.isInternational) {
+    if (this.props.documentType.id === 1) {
       return 2;
     }
     if (this.props.documentType.id === 2) {
@@ -146,8 +124,46 @@ class EntryForm extends Component<Props, State> {
     this.seriesRef = seriesRef;
   }
 
+  @bind
   send() {
-    const method = {};
+    if (this.sendValidat()) {
+      const method = {
+        surname: this.props.user.surname,
+        name: this.props.user.name,
+        birth: `${this.props.birth.day}-${this.props.birth.month}-${this.props.birth.year}`,
+        sex: this.props.sex.value,
+        citizenship: this.props.citizenship,
+        documentType: this.props.documentType,
+        documentNumber: `${this.props.documentNumber.series}-${this.props.documentNumber.number}`,
+        documentExpiry: `${this.props.documentExpiry.day}-${this.props.documentExpiry.month}-${
+          this.props.documentExpiry.year
+        }`,
+      };
+      Alert.alert(
+        'Введенные данные',
+        JSON.stringify(method),
+        [
+          {
+            text: 'OK',
+          },
+        ],
+        { cancelable: true },
+      );
+    }
+  }
+
+  sendValidat() {
+    if (
+      this.props.birth.valid
+      && this.props.documentExpiry.valid
+      && this.props.documentNumber.numberValid
+      && this.props.documentNumber.seriesValid
+      && this.props.sex.valid
+      && this.props.user.valid
+    ) {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -160,7 +176,7 @@ class EntryForm extends Component<Props, State> {
             <View style={styles.inputsWrapper}>
               <View style={styles.formTitle}>
                 <Text style={{ fontSize: 17 }}>{strings.PASSENGER_ADULT}</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.props.setClear}>
                   <Text style={{ color: CLEAR_TEXT_COLOR }}>{strings.CLEAR}</Text>
                 </TouchableOpacity>
               </View>
@@ -169,12 +185,14 @@ class EntryForm extends Component<Props, State> {
                 title={strings.SURNAME}
                 value={this.props.user.surname}
                 error={strings.REQUIRED_FIELD}
+                valid={this.props.user.valid}
               />
               <StyledInput
                 onChangeText={this.props.setName}
                 title={strings.NAME}
                 value={this.props.user.name}
                 error={strings.REQUIRED_FIELD}
+                valid={this.props.user.valid}
               />
               <View style={styles.dateWrapper}>
                 <StyledInput
@@ -182,26 +200,29 @@ class EntryForm extends Component<Props, State> {
                   title={strings.DATE_OF_BIRTH}
                   value={this.props.birth.day}
                   placeholder={strings.DD}
-                  textInputStyle={{ textAlign: 'center' }}
+                  textInputStyle={styles.dateTextInput}
                   keyboardType="number-pad"
                   maxLength={2}
+                  valid={this.props.birth.valid}
                 />
                 <StyledInput
                   onChangeText={this.props.setBirthMonth}
                   value={this.props.birth.month}
                   placeholder={strings.MM}
-                  textInputStyle={{ textAlign: 'center' }}
+                  textInputStyle={styles.dateTextInput}
                   keyboardType="number-pad"
                   maxLength={2}
                   onLayout={this.onLayoutChanges}
+                  valid={this.props.birth.valid}
                 />
                 <StyledInput
                   onChangeText={this.props.setBirthYear}
                   value={this.props.birth.year}
                   placeholder={strings.YYYY}
-                  textInputStyle={{ textAlign: 'center' }}
+                  textInputStyle={styles.dateTextInput}
                   keyboardType="number-pad"
                   maxLength={4}
+                  valid={this.props.birth.valid}
                 />
               </View>
               <View style={styles.sexContainer}>
@@ -282,74 +303,79 @@ class EntryForm extends Component<Props, State> {
                     onChangeText={this.setDocumentSeries}
                     title={strings.SERIES}
                     value={this.props.documentNumber.series}
-                    textInputStyle={{ textAlign: 'center' }}
+                    textInputStyle={styles.dateTextInput}
                     keyboardType={this.props.documentType.id === 3 ? 'default' : 'number-pad'}
                     maxLength={this.seriesMaxLength()}
                     ref={this.seriesSetRef}
+                    valid={this.props.documentNumber.seriesValid}
                   />
                 </View>
                 <StyledInput
                   onChangeText={this.props.setDocumentNumber}
                   title={strings.NUMBER}
                   value={this.props.documentNumber.number}
-                  textInputStyle={{ textAlign: 'center' }}
+                  textInputStyle={styles.dateTextInput}
                   keyboardType="number-pad"
-                  maxLength={this.isInternational ? 7 : 6}
+                  maxLength={this.props.documentType.id === 1 ? 7 : 6}
+                  valid={this.props.documentNumber.numberValid}
                 />
               </View>
               <View style={styles.dateWrapper}>
                 <StyledInput
-                  editable={this.isInternational}
+                  editable={this.props.documentType.id === 1}
                   onChangeText={this.props.setDocumentExpiryDay}
                   title={strings.DATE_OF_EXPIRY}
                   value={this.props.documentExpiry.day}
                   placeholder={strings.DD}
                   textInputStyle={{
                     textAlign: 'center',
-                    backgroundColor: this.isInternational ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                    backgroundColor:
+                      this.props.documentType.id === 1 ? INPUT_BACKGROUND_COLOR : BACKGROUND,
                   }}
                   keyboardType="number-pad"
                   maxLength={2}
+                  valid={this.props.documentExpiry.valid}
                 />
                 <StyledInput
-                  editable={this.isInternational}
+                  editable={this.props.documentType.id === 1}
                   onChangeText={this.props.setDocumentExpiryMonth}
                   value={this.props.documentExpiry.month}
                   placeholder={strings.MM}
                   textInputStyle={{
                     textAlign: 'center',
-                    backgroundColor: this.isInternational ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                    backgroundColor:
+                      this.props.documentType.id === 1 ? INPUT_BACKGROUND_COLOR : BACKGROUND,
                   }}
                   keyboardType="number-pad"
                   maxLength={2}
                   onLayout={this.onLayoutChanges}
+                  valid={this.props.documentExpiry.valid}
                 />
                 <StyledInput
-                  editable={this.isInternational}
+                  editable={this.props.documentType.id === 1}
                   onChangeText={this.props.setDocumentExpiryYear}
                   value={this.props.documentExpiry.year}
                   placeholder={strings.YYYY}
                   textInputStyle={{
                     textAlign: 'center',
-                    backgroundColor: this.isInternational ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                    backgroundColor:
+                      this.props.documentType.id === 1 ? INPUT_BACKGROUND_COLOR : BACKGROUND,
                   }}
                   keyboardType="number-pad"
                   maxLength={2}
+                  valid={this.props.documentExpiry.valid}
                 />
               </View>
             </View>
             <TouchableOpacity
-              style={{
-                flex: 1,
-                height: 40,
-                backgroundColor: this.state.isValid ? CLEAR_TEXT_COLOR : BACKGROUND,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginHorizontal: 10,
-                borderRadius: 5,
-              }}
+              disabled={!this.sendValidat()}
+              onPress={this.send}
+              style={[
+                styles.sendButton,
+                { backgroundColor: this.sendValidat() ? CLEAR_TEXT_COLOR : BACKGROUND },
+              ]}
             >
-              <Text style={{ color: '#fff', fontSize: 17 }}> Отправить </Text>
+              <Text style={styles.sendButtonText}>{strings.SEND}</Text>
             </TouchableOpacity>
           </ScrollView>
         </SafeAreaView>
@@ -382,5 +408,6 @@ export default connect(
     setDocumentExpiryDay,
     setDocumentExpiryMonth,
     setDocumentExpiryYear,
+    setClear,
   },
 )(EntryForm);

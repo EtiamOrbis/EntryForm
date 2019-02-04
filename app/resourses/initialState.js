@@ -33,7 +33,7 @@ const initialState: GlobalState = {
     day: '',
     month: '',
     year: '',
-    valid: false,
+    valid: true,
   },
 };
 

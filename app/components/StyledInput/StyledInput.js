@@ -20,6 +20,7 @@ type Props = {
   error: string,
   textInputStyle: Style,
   onLayout: (data: any) => void,
+  valid: boolean,
 };
 
 type State = {
@@ -31,37 +32,23 @@ class StyledInput extends Component<Props, State> {
     error: false,
   };
 
-  // $FlowFixMe
   @bind
   checkValid() {
-    if (this.props.value === '') {
+    if (this.props.valid) {
+      this.setState({
+        error: false,
+      });
+    } else {
       this.setState({
         error: true,
       });
     }
-    console.log(this.state);
-  }
-
-  // $FlowFixMe
-  @bind
-  showError() {
-    this.setState({
-      error: true,
-    });
-  }
-
-  // $FlowFixMe
-  @bind
-  dismissError() {
-    this.setState({
-      error: false,
-    });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.title}</Text>
+        <Text style={{ width: '100%' }}>{this.props.title}</Text>
         <TextInput
           {...this.props}
           onChangeText={this.props.onChangeText}
