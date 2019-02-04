@@ -1,5 +1,5 @@
 // @flow
-import type { Dispatch } from '../resourses/flowTypes';
+import type { Dispatch, GetState } from '../resourses/flowTypes';
 import {
   SET_DOCUMENT_TYPE,
   SET_DOCUMENT_NUMBER,
@@ -82,7 +82,10 @@ export const setDocumentType = (documentTypeLabel: string) => (dispatch: Dispatc
   });
 };
 
-export const setDocumentSeries = (documentSeries: string) => (dispatch: Dispatch, getState) => {
+export const setDocumentSeries = (documentSeries: string) => (
+  dispatch: Dispatch,
+  getState: GetState,
+) => {
   documentSeriesValidate(documentSeries.toUpperCase(), getState().documentType.id, dispatch);
   dispatch({
     type: SET_DOCUMENT_SERIES,
@@ -90,7 +93,10 @@ export const setDocumentSeries = (documentSeries: string) => (dispatch: Dispatch
   });
 };
 
-export const setDocumentNumber = (documentNumber: string) => (dispatch: Dispatch, getState) => {
+export const setDocumentNumber = (documentNumber: string) => (
+  dispatch: Dispatch,
+  getState: GetState,
+) => {
   const state = getState();
   dispatch({
     type: SET_DOCUMENT_NUMBER,
@@ -135,7 +141,7 @@ export const setDocumentNumber = (documentNumber: string) => (dispatch: Dispatch
   });
 };
 
-export const setDocumentExpiryDay = (day: string) => (dispatch: Dispatch, getState) => {
+export const setDocumentExpiryDay = (day: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState();
   dispatch({
     type: SET_DOCUMENT_EXPIRY_DAY,
@@ -160,7 +166,10 @@ export const setDocumentExpiryDay = (day: string) => (dispatch: Dispatch, getSta
   }
 };
 
-export const setDocumentExpiryMonth = (month: string) => (dispatch: Dispatch, getState) => {
+export const setDocumentExpiryMonth = (month: string) => (
+  dispatch: Dispatch,
+  getState: GetState,
+) => {
   const state = getState();
   dispatch({
     type: SET_DOCUMENT_EXPIRY_MONTH,
@@ -185,7 +194,7 @@ export const setDocumentExpiryMonth = (month: string) => (dispatch: Dispatch, ge
   }
 };
 
-export const setDocumentExpiryYear = (year: string) => (dispatch: Dispatch, getState) => {
+export const setDocumentExpiryYear = (year: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState();
   dispatch({
     type: SET_DOCUMENT_EXPIRY_YEAR,

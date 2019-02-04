@@ -63,3 +63,5 @@ export type GlobalState = {
   documentType: DocumentTypeState,
   documentExpiry: DocumentExpiryState,
 };
+
+export type GetState = () => GlobalState;

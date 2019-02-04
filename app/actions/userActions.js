@@ -1,10 +1,10 @@
 // @flow
-import type { Dispatch } from '../resourses/flowTypes';
+import type { Dispatch, GetState } from '../resourses/flowTypes';
 import { SET_NAME, SET_SURNAME, SET_VALID } from './actionTypes';
 
 const validator = text => text.replace(/[^a-zA-Zа-яёА-ЯЁ]/g, '');
 
-export const setName = (name: string) => (dispatch: Dispatch, getState) => {
+export const setName = (name: string) => (dispatch: Dispatch, getState: GetState) => {
   dispatch({
     type: SET_NAME,
     value: validator(name),
@@ -20,7 +20,7 @@ export const setName = (name: string) => (dispatch: Dispatch, getState) => {
   }
 };
 
-export const setSurname = (surname: string) => (dispatch: Dispatch, getState) => {
+export const setSurname = (surname: string) => (dispatch: Dispatch, getState: GetState) => {
   dispatch({
     type: SET_SURNAME,
     value: validator(surname),

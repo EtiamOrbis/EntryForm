@@ -1,12 +1,12 @@
 // @flow
 
-import type { Dispatch } from '../resourses/flowTypes';
+import type { Dispatch, GetState } from '../resourses/flowTypes';
 import {
   SET_BIRTH_DAY, SET_BIRTH_MONTH, SET_BIRTH_YEAR, SET_VALID,
 } from './actionTypes';
 import { validator } from '../lib/dataValidator';
 
-export const setBirthDay = (day: string) => (dispatch: Dispatch, getState) => {
+export const setBirthDay = (day: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState();
   dispatch({
     type: SET_BIRTH_DAY,
@@ -23,7 +23,7 @@ export const setBirthDay = (day: string) => (dispatch: Dispatch, getState) => {
   }
 };
 
-export const setBirthMonth = (month: string) => (dispatch: Dispatch, getState) => {
+export const setBirthMonth = (month: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState();
   dispatch({
     type: SET_BIRTH_MONTH,
@@ -40,7 +40,7 @@ export const setBirthMonth = (month: string) => (dispatch: Dispatch, getState) =
   }
 };
 
-export const setBirthYear = (year: string) => (dispatch: Dispatch, getState) => {
+export const setBirthYear = (year: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState();
   dispatch({
     type: SET_BIRTH_YEAR,
