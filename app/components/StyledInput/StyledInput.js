@@ -20,7 +20,7 @@ type Props = {
   error: string,
   textInputStyle: Style,
   onLayout: (data: any) => void,
-  valid: boolean,
+  valid?: boolean,
 };
 
 type State = {
@@ -28,13 +28,17 @@ type State = {
 };
 
 class StyledInput extends Component<Props, State> {
+  static defaultProps = {
+    valid: true,
+  };
+
   state = {
     error: false,
   };
 
   @bind
   checkValid() {
-    if (this.props.valid) {
+    if (this.props.valid && this.props.value !== '') {
       this.setState({
         error: false,
       });

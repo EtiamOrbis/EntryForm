@@ -28,14 +28,7 @@ import StyledInput from '../components/StyledInput';
 import { styles } from './styles';
 import { setSex } from '../actions/sexActions';
 import { bind } from '../lib/decorators';
-import {
-  SELECTED_SEX_BACKGROUND,
-  INPUT_BACKGROUND_COLOR,
-  SEX_TEXT_COLOR,
-  SELECTED_SEX_TEXT_COLOR,
-  BACKGROUND,
-  CLEAR_TEXT_COLOR,
-} from '../resourses/colors';
+import * as colors from '../resourses/colors';
 import PASS_COUNTRY from '../resourses/countries';
 import { setCitizenship } from '../actions/citizenshipActions';
 import StyledPicker from '../components/StyledPicker/StyledPicker';
@@ -177,7 +170,7 @@ class EntryForm extends Component<Props, State> {
               <View style={styles.formTitle}>
                 <Text style={{ fontSize: 17 }}>{strings.PASSENGER_ADULT}</Text>
                 <TouchableOpacity onPress={this.props.setClear}>
-                  <Text style={{ color: CLEAR_TEXT_COLOR }}>{strings.CLEAR}</Text>
+                  <Text style={{ color: colors.CLEAR_TEXT_COLOR }}>{strings.CLEAR}</Text>
                 </TouchableOpacity>
               </View>
               <StyledInput
@@ -185,14 +178,12 @@ class EntryForm extends Component<Props, State> {
                 title={strings.SURNAME}
                 value={this.props.user.surname}
                 error={strings.REQUIRED_FIELD}
-                valid={this.props.user.valid}
               />
               <StyledInput
                 onChangeText={this.props.setName}
                 title={strings.NAME}
                 value={this.props.user.name}
                 error={strings.REQUIRED_FIELD}
-                valid={this.props.user.valid}
               />
               <View style={styles.dateWrapper}>
                 <StyledInput
@@ -203,7 +194,6 @@ class EntryForm extends Component<Props, State> {
                   textInputStyle={styles.dateTextInput}
                   keyboardType="number-pad"
                   maxLength={2}
-                  valid={this.props.birth.valid}
                 />
                 <StyledInput
                   onChangeText={this.props.setBirthMonth}
@@ -213,7 +203,6 @@ class EntryForm extends Component<Props, State> {
                   keyboardType="number-pad"
                   maxLength={2}
                   onLayout={this.onLayoutChanges}
-                  valid={this.props.birth.valid}
                 />
                 <StyledInput
                   onChangeText={this.props.setBirthYear}
@@ -222,7 +211,6 @@ class EntryForm extends Component<Props, State> {
                   textInputStyle={styles.dateTextInput}
                   keyboardType="number-pad"
                   maxLength={4}
-                  valid={this.props.birth.valid}
                 />
               </View>
               <View style={styles.sexContainer}>
@@ -237,8 +225,8 @@ class EntryForm extends Component<Props, State> {
                       {
                         backgroundColor:
                           this.props.sex.value === 'male'
-                            ? SELECTED_SEX_BACKGROUND
-                            : INPUT_BACKGROUND_COLOR,
+                            ? colors.SELECTED_SEX_BACKGROUND
+                            : colors.INPUT_BACKGROUND_COLOR,
                       },
                     ]}
                   >
@@ -247,8 +235,8 @@ class EntryForm extends Component<Props, State> {
                         fontSize: 16,
                         color:
                           this.props.sex.value === 'male'
-                            ? SELECTED_SEX_TEXT_COLOR
-                            : SEX_TEXT_COLOR,
+                            ? colors.SELECTED_SEX_TEXT_COLOR
+                            : colors.SEX_TEXT_COLOR,
                       }}
                     >
                       {strings.M}
@@ -263,8 +251,8 @@ class EntryForm extends Component<Props, State> {
                       {
                         backgroundColor:
                           this.props.sex.value === 'female'
-                            ? SELECTED_SEX_BACKGROUND
-                            : INPUT_BACKGROUND_COLOR,
+                            ? colors.SELECTED_SEX_BACKGROUND
+                            : colors.INPUT_BACKGROUND_COLOR,
                       },
                     ]}
                   >
@@ -273,8 +261,8 @@ class EntryForm extends Component<Props, State> {
                         fontSize: 16,
                         color:
                           this.props.sex.value === 'female'
-                            ? SELECTED_SEX_TEXT_COLOR
-                            : SEX_TEXT_COLOR,
+                            ? colors.SELECTED_SEX_TEXT_COLOR
+                            : colors.SEX_TEXT_COLOR,
                       }}
                     >
                       {strings.W}
@@ -330,11 +318,12 @@ class EntryForm extends Component<Props, State> {
                   textInputStyle={{
                     textAlign: 'center',
                     backgroundColor:
-                      this.props.documentType.id === 1 ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                      this.props.documentType.id === 1
+                        ? colors.INPUT_BACKGROUND_COLOR
+                        : colors.BACKGROUND,
                   }}
                   keyboardType="number-pad"
                   maxLength={2}
-                  valid={this.props.documentExpiry.valid}
                 />
                 <StyledInput
                   editable={this.props.documentType.id === 1}
@@ -344,12 +333,13 @@ class EntryForm extends Component<Props, State> {
                   textInputStyle={{
                     textAlign: 'center',
                     backgroundColor:
-                      this.props.documentType.id === 1 ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                      this.props.documentType.id === 1
+                        ? colors.INPUT_BACKGROUND_COLOR
+                        : colors.BACKGROUND,
                   }}
                   keyboardType="number-pad"
                   maxLength={2}
                   onLayout={this.onLayoutChanges}
-                  valid={this.props.documentExpiry.valid}
                 />
                 <StyledInput
                   editable={this.props.documentType.id === 1}
@@ -359,11 +349,12 @@ class EntryForm extends Component<Props, State> {
                   textInputStyle={{
                     textAlign: 'center',
                     backgroundColor:
-                      this.props.documentType.id === 1 ? INPUT_BACKGROUND_COLOR : BACKGROUND,
+                      this.props.documentType.id === 1
+                        ? colors.INPUT_BACKGROUND_COLOR
+                        : colors.BACKGROUND,
                   }}
                   keyboardType="number-pad"
                   maxLength={2}
-                  valid={this.props.documentExpiry.valid}
                 />
               </View>
             </View>
@@ -372,7 +363,11 @@ class EntryForm extends Component<Props, State> {
               onPress={this.send}
               style={[
                 styles.sendButton,
-                { backgroundColor: this.sendValidat() ? CLEAR_TEXT_COLOR : BACKGROUND },
+                {
+                  backgroundColor: this.sendValidat()
+                    ? colors.CLEAR_TEXT_COLOR
+                    : colors.BACKGROUND,
+                },
               ]}
             >
               <Text style={styles.sendButtonText}>{strings.SEND}</Text>

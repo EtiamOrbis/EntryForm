@@ -1,7 +1,9 @@
 // @flow
 import type { Action, DocumentNumberState } from '../resourses/flowTypes';
 import initialState from '../resourses/initialState';
-import { SET_DOCUMENT_NUMBER, SET_DOCUMENT_SERIES, SET_VALID } from '../actions/actionTypes';
+import {
+  SET_DOCUMENT_NUMBER, SET_DOCUMENT_SERIES, SET_VALID, CLEAR,
+} from '../actions/actionTypes';
 
 export default function documentNumber(
   state: DocumentNumberState = initialState.documentNumber,
@@ -20,6 +22,8 @@ export default function documentNumber(
         return { ...state, seriesValid: action.value.value };
       }
       return state;
+    case CLEAR:
+      return action.value.documentNumber;
     default:
       return state;
   }

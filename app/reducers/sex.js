@@ -1,7 +1,7 @@
 // @flow
 import type { Action, SexTypeState } from '../resourses/flowTypes';
 import initialState from '../resourses/initialState';
-import { SET_SEX, SET_VALID } from '../actions/actionTypes';
+import { SET_SEX, SET_VALID, CLEAR } from '../actions/actionTypes';
 
 export default function sex(state: SexTypeState = initialState.sex, action: Action) {
   switch (action.type) {
@@ -12,6 +12,8 @@ export default function sex(state: SexTypeState = initialState.sex, action: Acti
         return { ...state, valid: action.value.value };
       }
       return state;
+    case CLEAR:
+      return action.value.sex;
     default:
       return state;
   }

@@ -6,6 +6,7 @@ import {
   SET_DOCUMENT_EXPIRY_MONTH,
   SET_DOCUMENT_EXPIRY_YEAR,
   SET_VALID,
+  CLEAR,
 } from '../actions/actionTypes';
 
 export default function documentExpiry(
@@ -24,6 +25,8 @@ export default function documentExpiry(
         return { ...state, valid: action.value.value };
       }
       return state;
+    case CLEAR:
+      return action.value.documentExpiry;
     default:
       return state;
   }
