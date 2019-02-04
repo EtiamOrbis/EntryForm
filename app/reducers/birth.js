@@ -2,7 +2,9 @@
 
 import type { Action, BirthState } from '../resourses/flowTypes';
 import initialState from '../resourses/initialState';
-import { SET_BIRTH_DAY, SET_BIRTH_MONTH, SET_BIRTH_YEAR } from '../actions/actionTypes';
+import {
+  SET_BIRTH_DAY, SET_BIRTH_MONTH, SET_BIRTH_YEAR, SET_VALID,
+} from '../actions/actionTypes';
 
 export default function birth(state: BirthState = initialState.birth, action: Action) {
   switch (action.type) {
@@ -12,6 +14,11 @@ export default function birth(state: BirthState = initialState.birth, action: Ac
       return { ...state, month: action.value };
     case SET_BIRTH_YEAR:
       return { ...state, year: action.value };
+    case SET_VALID:
+      if (action.value.field === 'birth') {
+        return { ...state, valid: action.value.value };
+      }
+      return state;
     default:
       return state;
   }

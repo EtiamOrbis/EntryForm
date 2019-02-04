@@ -6,23 +6,34 @@ const initialState: GlobalState = {
   user: {
     name: '',
     surname: '',
+    valid: false,
   },
   birth: {
     day: '',
     month: '',
     year: '',
+    valid: false,
   },
-  sex: '',
+  sex: {
+    value: '',
+    valid: false,
+  },
   citizenship: { label: 'Россия', code: 'RUS' },
   documentType: {
     label: 'Общегражданский',
     id: 2,
   },
-  documentNumber: { series: '', number: '' },
+  documentNumber: {
+    series: '',
+    number: '',
+    numberValid: false,
+    seriesValid: false,
+  },
   documentExpiry: {
     day: '',
     month: '',
     year: '',
+    valid: false,
   },
 };
 

@@ -20,23 +20,28 @@ export type CitizenshipType = {
 export type UserState = {
   name: string,
   surname: string,
+  valid: boolean,
 };
 
 export type BirthState = {
   day: string,
   month: string,
   year: string,
+  valid: boolean,
 };
 
 export type DocumentNumberState = {
   series: string,
   number: string,
+  numberValid: boolean,
+  seriesValid: boolean,
 };
 
 export type DocumentExpiryState = {
   day: string,
   month: string,
   year: string,
+  valid: boolean,
 };
 
 export type DocumentTypeState = {
@@ -44,10 +49,15 @@ export type DocumentTypeState = {
   id: number,
 };
 
+export type SexTypeState = {
+  value: string,
+  valid: boolean,
+};
+
 export type GlobalState = {
   user: UserState,
   birth: BirthState,
-  sex: string,
+  sex: SexTypeState,
   citizenship: CitizenshipType,
   documentNumber: DocumentNumberState,
   documentType: DocumentTypeState,

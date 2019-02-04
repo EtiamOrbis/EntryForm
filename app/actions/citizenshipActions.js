@@ -1,6 +1,6 @@
 // @flow
 import type { Dispatch } from '../resourses/flowTypes';
-import { SET_CITIZENSHIP } from './actionTypes';
+import { SET_CITIZENSHIP, SET_VALID } from './actionTypes';
 import PASS_COUNTRY from '../resourses/countries';
 
 export const setCitizenship = (citizenshipLabel: string) => (dispatch: Dispatch) => {
@@ -9,6 +9,13 @@ export const setCitizenship = (citizenshipLabel: string) => (dispatch: Dispatch)
       dispatch({
         type: SET_CITIZENSHIP,
         value: item,
+      });
+      dispatch({
+        type: SET_VALID,
+        value: {
+          field: 'citizenship',
+          value: true,
+        },
       });
     }
   });

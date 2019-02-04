@@ -18,6 +18,7 @@ import type {
   DocumentTypeState,
   DocumentNumberState,
   DocumentExpiryState,
+  SexTypeState,
 } from '../resourses/flowTypes';
 import * as strings from '../resourses/strings';
 import { setSurname, setName } from '../actions/userActions';
@@ -32,6 +33,7 @@ import {
   SEX_TEXT_COLOR,
   SELECTED_SEX_TEXT_COLOR,
   BACKGROUND,
+  CLEAR_TEXT_COLOR,
 } from '../resourses/colors';
 import PASS_COUNTRY from '../resourses/countries';
 import { setCitizenship } from '../actions/citizenshipActions';
@@ -45,13 +47,14 @@ import {
   setDocumentExpiryMonth,
   setDocumentExpiryYear,
 } from '../actions/documentActions';
+import { IS_IOS } from '../resourses/constants';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 type Props = {
   user: UserState,
   birth: BirthState,
-  sex: string,
+  sex: SexTypeState,
   citizenship: CitizenshipType,
   documentType: DocumentTypeState,
   documentNumber: DocumentNumberState,
@@ -73,7 +76,7 @@ type Props = {
 
 type State = {
   width: number,
-  seriesValid: boolean,
+  isValid: boolean,
 };
 
 class EntryForm extends Component<Props, State> {
@@ -83,35 +86,40 @@ class EntryForm extends Component<Props, State> {
 
   state = {
     width: (SCREEN_WIDTH - 20) / 3,
-    seriesValid: false,
+    isValid: false,
   };
 
-  // $FlowFixMe
   @bind
   onLayoutChanges(data) {
     this.setState({ width: data.nativeEvent.layout.width + 20 });
   }
 
-  // $FlowFixMe
   @bind
   setDocumentSeries(text: string) {
-    if (text) {
-      const valid = text.match(/^M{0,3}(D?C{0,3}|C[DM])(L?X{0,3}|X[LC])(V?I{0,3}|I[VX])[А-Я]{2}$/);
-      if (valid) {
-        if (this.seriesRef) {
-          this.seriesRef.dismissError();
+    if (this.props.documentType.id === 3) {
+      if (text) {
+        if (text[0].match(/[XVI]/g)) {
+          const valid = text.match(
+            /^(M{0,3}(D?C{0,3}|C[DM])(L?X{0,3}|X[LC])(V?I{0,3}|I[VX])){1,2}[А-Я]{2}$/,
+          );
+          if (valid) {
+            if (this.seriesRef) {
+              this.seriesRef.dismissError();
+            }
+            this.setState({
+              isValid: true,
+            });
+          } else if (this.seriesRef) {
+            this.seriesRef.showError();
+          }
+        } else if (this.seriesRef) {
+          this.seriesRef.showError();
         }
-        this.setState({
-          seriesValid: true,
-        });
-      } else if (this.seriesRef) {
-        this.seriesRef.showError();
       }
     }
     this.props.setDocumentSeries(text);
   }
 
-  // $FlowFixMe
   @bind
   seriesMaxLength() {
     if (this.isInternational) {
@@ -123,28 +131,29 @@ class EntryForm extends Component<Props, State> {
     return 6;
   }
 
-  // $FlowFixMe
   @bind
   changeSexMale() {
     this.props.setSex('male');
   }
 
-  // $FlowFixMe
   @bind
   changeSexFemale() {
     this.props.setSex('female');
   }
 
-  // $FlowFixMe
   @bind
   seriesSetRef(seriesRef) {
     this.seriesRef = seriesRef;
   }
 
+  send() {
+    const method = {};
+  }
+
   render() {
     console.log(this.props);
     return (
-      <KeyboardAvoidingView behavior="padding" enabled>
+      <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'none'} enabled>
         <SafeAreaView style={styles.container}>
           <ScrollView>
             <Text style={styles.header}>{strings.PASSENGER_DATA}</Text>
@@ -152,7 +161,7 @@ class EntryForm extends Component<Props, State> {
               <View style={styles.formTitle}>
                 <Text style={{ fontSize: 17 }}>{strings.PASSENGER_ADULT}</Text>
                 <TouchableOpacity>
-                  <Text>{strings.CLEAR}</Text>
+                  <Text style={{ color: CLEAR_TEXT_COLOR }}>{strings.CLEAR}</Text>
                 </TouchableOpacity>
               </View>
               <StyledInput
@@ -192,7 +201,7 @@ class EntryForm extends Component<Props, State> {
                   placeholder={strings.YYYY}
                   textInputStyle={{ textAlign: 'center' }}
                   keyboardType="number-pad"
-                  maxLength={2}
+                  maxLength={4}
                 />
               </View>
               <View style={styles.sexContainer}>
@@ -206,7 +215,7 @@ class EntryForm extends Component<Props, State> {
                       styles.leftButton,
                       {
                         backgroundColor:
-                          this.props.sex === 'male'
+                          this.props.sex.value === 'male'
                             ? SELECTED_SEX_BACKGROUND
                             : INPUT_BACKGROUND_COLOR,
                       },
@@ -215,7 +224,10 @@ class EntryForm extends Component<Props, State> {
                     <Text
                       style={{
                         fontSize: 16,
-                        color: this.props.sex === 'male' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
+                        color:
+                          this.props.sex.value === 'male'
+                            ? SELECTED_SEX_TEXT_COLOR
+                            : SEX_TEXT_COLOR,
                       }}
                     >
                       {strings.M}
@@ -229,7 +241,7 @@ class EntryForm extends Component<Props, State> {
                       styles.rightButton,
                       {
                         backgroundColor:
-                          this.props.sex === 'female'
+                          this.props.sex.value === 'female'
                             ? SELECTED_SEX_BACKGROUND
                             : INPUT_BACKGROUND_COLOR,
                       },
@@ -239,7 +251,9 @@ class EntryForm extends Component<Props, State> {
                       style={{
                         fontSize: 16,
                         color:
-                          this.props.sex === 'female' ? SELECTED_SEX_TEXT_COLOR : SEX_TEXT_COLOR,
+                          this.props.sex.value === 'female'
+                            ? SELECTED_SEX_TEXT_COLOR
+                            : SEX_TEXT_COLOR,
                       }}
                     >
                       {strings.W}
@@ -324,6 +338,19 @@ class EntryForm extends Component<Props, State> {
                 />
               </View>
             </View>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                height: 40,
+                backgroundColor: this.state.isValid ? CLEAR_TEXT_COLOR : BACKGROUND,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginHorizontal: 10,
+                borderRadius: 5,
+              }}
+            >
+              <Text style={{ color: '#fff', fontSize: 17 }}> Отправить </Text>
+            </TouchableOpacity>
           </ScrollView>
         </SafeAreaView>
       </KeyboardAvoidingView>

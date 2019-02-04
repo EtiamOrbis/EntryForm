@@ -1,7 +1,7 @@
 // @flow
 import type { Action, UserState } from '../resourses/flowTypes';
 import initialState from '../resourses/initialState';
-import { SET_NAME, SET_SURNAME } from '../actions/actionTypes';
+import { SET_NAME, SET_SURNAME, SET_VALID } from '../actions/actionTypes';
 
 export default function user(state: UserState = initialState.user, action: Action) {
   switch (action.type) {
@@ -9,6 +9,11 @@ export default function user(state: UserState = initialState.user, action: Actio
       return { ...state, name: action.value };
     case SET_SURNAME:
       return { ...state, surname: action.value };
+    case SET_VALID:
+      if (action.value.field === 'user') {
+        return { ...state, valid: action.value.value };
+      }
+      return state;
     default:
       return state;
   }
