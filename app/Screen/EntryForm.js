@@ -160,7 +160,6 @@ class EntryForm extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.props);
     return (
       <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'none'} enabled>
         <SafeAreaView style={styles.container}>

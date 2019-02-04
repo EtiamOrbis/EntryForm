@@ -13,7 +13,6 @@ import DOCUMENT_TYPES from '../resourses/documents';
 import { validator } from '../lib/dataValidator';
 
 const documentSeriesValidate = (text: string, id, dispatch: Dispatch) => {
-  console.log(text);
   if (id === 1 && text.length === 2) {
     dispatch({
       type: SET_VALID,
