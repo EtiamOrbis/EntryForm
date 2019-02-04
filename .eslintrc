@@ -2,7 +2,6 @@
   "extends": "airbnb",
   "parser": "babel-eslint",
   "rules": {
-    "no-console": 0,
     "no-restricted-syntax": 0,
     "guard-for-in": 0,
     "react/prefer-stateless-function": 0,
