@@ -170,7 +170,7 @@ class EntryForm extends Component<Props, State> {
               <View style={styles.formTitle}>
                 <Text style={{ fontSize: 17 }}>{strings.PASSENGER_ADULT}</Text>
                 <TouchableOpacity onPress={this.props.setClear}>
-                  <Text style={{ color: colors.CLEAR_TEXT_COLOR }}>{strings.CLEAR}</Text>
+                  <Text style={{ color: colors.BLUE_COLOR }}>{strings.CLEAR}</Text>
                 </TouchableOpacity>
               </View>
               <StyledInput
@@ -365,7 +365,7 @@ class EntryForm extends Component<Props, State> {
                 styles.sendButton,
                 {
                   backgroundColor: this.sendValidat()
-                    ? colors.CLEAR_TEXT_COLOR
+                    ? colors.BLUE_COLOR
                     : colors.BACKGROUND,
                 },
               ]}
